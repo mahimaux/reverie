@@ -8,6 +8,7 @@
  *
  * The contract (inputs/outputs) is identical either way.
  */
+import { Platform } from 'react-native';
 import { getDeviceId } from '../storage/repo';
 import type {
   ChapterOneResult,
@@ -20,11 +21,16 @@ import * as mock from './mockApi';
 import { safetyCheck, type SafetyResult } from './safety';
 
 const API_BASE = (process.env.EXPO_PUBLIC_API_BASE_URL || '').replace(/\/$/, '');
-const USE_REMOTE = API_BASE.length > 0;
+// On web, the app is served from the same origin as the /api functions, so we
+// can call them with a relative path even without an explicit base URL. Native
+// builds have no origin, so they only go remote when a base URL is configured.
+const IS_WEB = Platform.OS === 'web';
+const USE_REMOTE = API_BASE.length > 0 || IS_WEB;
 
 async function post<T>(path: string, body: unknown): Promise<T> {
   const deviceId = await getDeviceId();
-  const res = await fetch(`${API_BASE}/api/${path}`, {
+  const url = API_BASE ? `${API_BASE}/api/${path}` : `/api/${path}`;
+  const res = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-device-id': deviceId },
     body: JSON.stringify(body),
