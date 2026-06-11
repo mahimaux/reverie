@@ -3,7 +3,7 @@
 > A bestie-tarot-reader in your pocket that talks you down from comparison
 > spirals and reframes them into calm, useful self-belief.
 
-A React Native + **Expo SDK 56** (TypeScript) frontend, built from the attached
+A React Native + **Expo SDK 54** (TypeScript) frontend, built from the attached
 PRD and TRD. Warm, glassmorphic, a little mystical — inspired by the reference
 image (ivory surfaces, frosted cards, one near-black contrast surface, and a
 single warm orange→peach "sun" gradient accent).
