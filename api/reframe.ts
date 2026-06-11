@@ -39,12 +39,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     );
     logMetric('reframe', Date.now() - start, true);
     res.status(200).json({ safe: true, result });
-  } catch (e: any) {
+  } catch (e) {
     logMetric('reframe', Date.now() - start, false);
-    // Temporary, non-secret diagnostic to surface why generation failed.
-    const detail = `${e?.name || 'Error'}: ${e?.status ?? ''} ${e?.error?.type ?? ''} ${e?.message ?? e}`
-      .replace(/\s+/g, ' ')
-      .slice(0, 300);
-    res.status(502).json({ error: 'generation_failed', detail });
+    res.status(502).json({ error: 'generation_failed' });
   }
 }
